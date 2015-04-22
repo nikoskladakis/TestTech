@@ -30,15 +30,34 @@ public class TestRestController {
 			@RequestParam(value="firstName") String firstName, 
 			@RequestParam(value="lastName") String lastName ) {
 		
-		assertThat( firstName, not( nullValue() ) );
-		assertThat( firstName, not( is( "" ) ) );
-		assertThat( lastName, not( nullValue() ) );
-		assertThat( lastName, not( is( "" ) ) );
-		
+		assertNonEmpty( firstName, "first name" );
+		assertNonEmpty( lastName, "last name" );
+
 		AuthorEntity ae = new AuthorEntity();
 		ae.setFirstName( firstName );
 		ae.setLastName( lastName );
 		return reposAuthor.save( ae );
+	}
+	
+	@RequestMapping("/book/save")
+	public BookEntity createBook( 
+			@RequestParam(value="title") String title, 
+			@RequestParam(value="authorId") Long ... authorId ) {
+		
+		assertNonEmpty( title, "title" );
+		assertThat( authorId.length, is( not( 0 ) ) );
+		
+		BookEntity book = new BookEntity();
+		book.setTitle( title );
+		List<AuthorEntity> authors = new ArrayList<AuthorEntity>();
+		book.setAuthors( authors );
+
+		for( Long aid : authorId ) {
+			AuthorEntity ae = reposAuthor.findOne( aid );
+			assertThat( ae, describedAs( "no author found with id " + aid, notNullValue()  ) );
+			authors.add( ae );
+		}
+		return reposBook.save( book );
 	}
 	
 	@RequestMapping("/author/retrieveAll")
@@ -74,5 +93,11 @@ public class TestRestController {
 		List<BookEntity> bes = reposBook.findByAuthorLastName( lastName );
 		
 		return bes;
+	}
+	
+	protected void assertNonEmpty( String ob, String description ) {
+		assertThat( ob, describedAs( "non-empty " + description, not( nullValue() ) ) );
+		assertThat( ob, describedAs( "non-empty " + description, not( is( "" ) ) ) );
+		assertThat( ob, describedAs( "non-null " + description, not( is( "null" ) ) ) );
 	}
 }
