@@ -22,15 +22,15 @@ public class ApplicationContext {
      *
      * See: <a href="http://stackoverflow.com/a/14167357/313554">This StackOverflow answer</a> for more details.
      */
-    @Profile(Profiles.APPLICATION)
+  //  @Profile(Profiles.APPLICATION)
     @Configuration
     @PropertySource("classpath:application.properties")
     static class ApplicationProperties {}
 
-    @Profile(Profiles.INTEGRATION_TEST)
-    @Configuration
-    @PropertySource("classpath:integration-test.properties")
-    static class IntegrationTestProperties {}
+//    @Profile(Profiles.INTEGRATION_TEST)
+//    @Configuration
+//    @PropertySource("classpath:integration-test.properties")
+//    static class IntegrationTestProperties {}
 
     @Bean
     MessageSource messageSource() {
