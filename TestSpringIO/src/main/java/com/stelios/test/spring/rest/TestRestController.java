@@ -1,6 +1,7 @@
 package com.stelios.test.spring.rest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stelios.test.obj.Author;
+import com.stelios.test.spring.controllers.AuthorController;
+import com.stelios.test.spring.controllers.BookController;
 import com.stelios.test.spring.jpa.entities.AuthorEntity;
 import com.stelios.test.spring.jpa.entities.BookEntity;
 import com.stelios.test.spring.jpa.repos.AuthorRepository;
@@ -19,17 +22,22 @@ import static org.hamcrest.Matchers.*;
 
 @RestController
 public class TestRestController {
+//	@Autowired
+//	private AuthorRepository reposAuthor;
+//	@Autowired
+//	private BookRepository reposBook;
+	
 	@Autowired
-	private AuthorRepository reposAuthor;
+	private AuthorController authorController;
 	@Autowired
-	private BookRepository reposBook;
+	private BookController bookController;
 	
 	
 	@RequestMapping("/author/save")
 	public AuthorEntity createAuthor( 
 			@RequestParam(value="firstName") String firstName, 
 			@RequestParam(value="lastName") String lastName ) {
-		
+		/*
 		assertNonEmpty( firstName, "first name" );
 		assertNonEmpty( lastName, "last name" );
 
@@ -37,13 +45,19 @@ public class TestRestController {
 		ae.setFirstName( firstName );
 		ae.setLastName( lastName );
 		return reposAuthor.save( ae );
+		*/
+		
+		AuthorEntity ae = new AuthorEntity();
+		ae.setFirstName( firstName );
+		ae.setLastName( lastName );
+		return authorController.save( ae );
 	}
 	
 	@RequestMapping("/book/save")
 	public BookEntity createBook( 
 			@RequestParam(value="title") String title, 
-			@RequestParam(value="authorId") Long ... authorId ) {
-		
+			@RequestParam(value="authorId") Long... authorId ) {
+		/*
 		assertNonEmpty( title, "title" );
 		assertThat( authorId.length, is( not( 0 ) ) );
 		
@@ -58,13 +72,16 @@ public class TestRestController {
 			authors.add( ae );
 		}
 		return reposBook.save( book );
+		//*/
+		return bookController.save(title, Arrays.asList( authorId ) );
 	}
 	
 	@RequestMapping("/author/retrieveAll")
 	public List<Author> retrieveAuthors() {
-
+		
 		List<Author> as = new ArrayList<Author>();
-		List<AuthorEntity> aes = reposAuthor.findAll();
+		//List<AuthorEntity> aes = reposAuthor.findAll();
+		List<AuthorEntity> aes = authorController.retrieveAll();
 		for( AuthorEntity ae : aes ) {
 			Author a = new Author();
 			as.add( a );
@@ -79,20 +96,21 @@ public class TestRestController {
 	@RequestMapping("/book/retrieveAll")
 	public List<BookEntity> retrieveBooks() {
 
-		List<BookEntity> bes = reposBook.findAll();
-		
-		return bes;
+//		List<BookEntity> bes = reposBook.findAll();
+//		
+//		return bes;
+		return bookController.retrieveAll();
 	}
 	
 	@RequestMapping("/book/findByAuthorLastName")
-	public List<BookEntity> retrieveBooks( @RequestParam(value="lastName") String lastName  ) {
+	public List<BookEntity> retrieveBooksByAuthorLastName( @RequestParam(value="lastName") String lastName  ) {
 
-		assertThat( lastName, describedAs( "non-empty last name", not( nullValue() ) ) );
-		assertThat( lastName, describedAs( "non-empty last name", not( is( "" ) ) ) );
-		
-		List<BookEntity> bes = reposBook.findByAuthorLastName( lastName );
-		
-		return bes;
+//		assertNonEmpty( lastName, "last name" );
+//		
+//		List<BookEntity> bes = reposBook.findByAuthorLastName( lastName );
+//		
+//		return bes;
+		return retrieveBooksByAuthorLastName( lastName );
 	}
 	
 	protected void assertNonEmpty( String ob, String description ) {
