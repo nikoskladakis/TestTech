@@ -1,11 +1,11 @@
 package com.stelios.test.spring.controllers;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
 import com.stelios.test.spring.jpa.entities.AuthorEntity;
 import com.stelios.test.spring.jpa.repos.AuthorRepository;
 
-@Controller
+@Service
 public class AuthorController extends BaseController<AuthorRepository, AuthorEntity, Long> {
 	
 	protected void saveAssertions( AuthorEntity ae ) {

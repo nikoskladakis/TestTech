@@ -54,7 +54,7 @@ public class PersistenceContext {
 		// Configures the used database dialect. This allows Hibernate to create
 		// SQL
 		// that is optimized for the used database.
-		jpaProperties.put("hibernate.dialect",
+		jpaProperties.put("hibernate.dialect", 
 				env.getRequiredProperty("hibernate.dialect"));
 
 		// Specifies the action that is invoked to the database when the
@@ -93,12 +93,18 @@ public class PersistenceContext {
 	@Bean(destroyMethod = "close")
     DataSource dataSource(Environment env) {
         HikariConfig dataSourceConfig = new HikariConfig();
+
         dataSourceConfig.setDriverClassName(env.getRequiredProperty(PROPERTY_NAME_DB_DRIVER_CLASS));
         dataSourceConfig.setJdbcUrl(env.getRequiredProperty(PROPERTY_NAME_DB_URL));
         dataSourceConfig.setUsername(env.getRequiredProperty(PROPERTY_NAME_DB_USER));
         dataSourceConfig.setPassword(env.getRequiredProperty(PROPERTY_NAME_DB_PASSWORD));
-
+        /*
+        dataSourceConfig.setDriverClassName("org.h2.Driver");
+        dataSourceConfig.setJdbcUrl("jdbc:h2:mem:datajpa");
+        dataSourceConfig.setUsername("sa");
+        dataSourceConfig.setPassword("");
+  //*/      
         return new HikariDataSource(dataSourceConfig);
     }
-
+	
 }

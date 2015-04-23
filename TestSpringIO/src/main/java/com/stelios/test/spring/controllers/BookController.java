@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
 import com.stelios.test.spring.jpa.entities.AuthorEntity;
 import com.stelios.test.spring.jpa.entities.BookEntity;
 import com.stelios.test.spring.jpa.repos.BookRepository;
 
-@Controller
+@Service
 public class BookController extends BaseController<BookRepository, BookEntity, Long> {
 
 	@Autowired

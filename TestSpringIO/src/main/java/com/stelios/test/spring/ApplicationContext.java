@@ -2,6 +2,7 @@ package com.stelios.test.spring;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
@@ -9,6 +10,9 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
 @Configuration
+@ComponentScan( basePackages = {
+		 "com.stelios.test.spring",  "com.stelios.test.spring.controllers"
+})
 public class ApplicationContext {
 	private static final String MESSAGE_SOURCE_BASE_NAME = "i18n/messages";
 
@@ -41,6 +45,11 @@ public class ApplicationContext {
         return new PropertySourcesPlaceholderConfigurer();
     }
     
-
-    
+/*
+    @Bean 
+    @Lazy
+    BookController bookController() {
+    	return new BookController();
+    }
+//*/  
 }
